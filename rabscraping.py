@@ -8,7 +8,7 @@ arquivo_saida = 'lista_avioes.csv'
 df = []
 
 for m in matriculas:
-    
+    m = m.strip()
     print(f"Processando a matrícula: {m}")
     html = requests.get(f"https://sistemas.anac.gov.br/aeronaves/cons_rab_resposta.asp?textMarca={m}").content
     soup = BeautifulSoup(html, 'html.parser')
@@ -25,7 +25,9 @@ for m in matriculas:
         dados[campo[0]] = valor
 
     if(dados['Modelo'] != 'Modelo:'):   
-      df.append(dados)    
+      df.append(dados) 
+    else:   
+      print(f"--- Matrícula {m} não encontrada ---")
 
 df = pd.DataFrame(df, columns=dados.keys())    
 
