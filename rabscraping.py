@@ -2,47 +2,34 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
+matriculas = ['PS-AEH', 'PR-PJN', 'XE', 'PR-TOL']
+arquivo_saida = 'lista_avioes.csv'
 
-class RABScraping:
+df = []
 
-	def __init__(self, matriculas=[], verbose=False):
+for m in matriculas:
+    m = m.strip()
+    print(f"Processando a matrícula: {m}")
+    html = requests.get(f"https://sistemas.anac.gov.br/aeronaves/cons_rab_resposta.asp?textMarca={m}").content
+    soup = BeautifulSoup(html, 'html.parser')
 
-		self.__df = []
+    tabela = soup.find("table", class_="table table-hover")
+    linhas = tabela.find_all('tr')
+    dados = {'Matricula' : m}
 
-		for m in matriculas:
-			m = m.strip()
+    for ln in linhas:
+        texto = ln.text.strip()
+        texto = texto.split('\n')
+        campo = texto[0].split(":")
+        valor = texto[-1].replace("\t","")     
+        dados[campo[0]] = valor
 
-			if verbose:
-				print(f"Processando a matrícula: {m} | início")
+    if(dados['Modelo'] != 'Modelo:'):   
+      df.append(dados) 
+    else:   
+      print(f"--- Matrícula {m} não encontrada ---")
 
-			html = requests.get(f"https://sistemas.anac.gov.br/aeronaves/cons_rab_resposta.asp?textMarca={m}").content
-			soup = BeautifulSoup(html, 'html.parser')
+df = pd.DataFrame(df, columns=dados.keys())    
+df.sort_values(by=['Matricula'], inplace=True)
 
-			tabela = soup.find("table", class_="table table-hover")
-			linhas = tabela.find_all('tr')
-			dados = {'Matricula' : m}
-
-			for ln in linhas:
-				texto = ln.text.strip()
-				texto = texto.split('\n')
-				campo = texto[0].split(":")
-				valor = texto[-1].replace("\t","")     
-				dados[campo[0]] = valor
-
-			if(dados['Modelo'] != 'Modelo:'):   
-				self.__df.append(dados) 
-			else:
-				if verbose:     
-					print(f"--- Matrícula {m} não encontrada ---")
-
-			if verbose:
-				print(f"Processando a matrícula: {m} | fim")
-
-		self.__df = pd.DataFrame(df, columns=dados.keys())    
-		self.__df.sort_values(by=['Matricula'], inplace=True)
-
-	def obter_dados(self):
-		return self.__df
-
-	def salvar_arquivo(self, saida="lista_aeronaves.csv"):
-		pd.DataFrame.to_csv(self.__df, saida, columns=self.__df.columns, index=False)
+pd.DataFrame.to_csv(df, arquivo_saida, columns=df.columns, index=False)
