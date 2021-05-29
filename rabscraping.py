@@ -30,5 +30,6 @@ for m in matriculas:
       print(f"--- Matrícula {m} não encontrada ---")
 
 df = pd.DataFrame(df, columns=dados.keys())    
+df.sort_values(by=['Matricula'], inplace=True)
 
 pd.DataFrame.to_csv(df, arquivo_saida, columns=df.columns, index=False)
