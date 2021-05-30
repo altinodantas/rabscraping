@@ -1,13 +1,18 @@
 # rabscraping
 
-Código pyhon que realiza um scrapping no site do Registro Aeronáutico Brasileiro (RAB) através da busca por matrícula. 
+Código pyhon que realiza um scraping no site do Registro Aeronáutico Brasileiro (RAB) através da busca por matrícula. 
 A classe RABScraping, a partir de uma lista de matrículas brasileiras, realiza o scraping e fornece um Pandas DataFrame e/ou salva um arquivo com as informações encontradas.
 
 ## Arquivos suportados para salvamento
 - csv
 - Excel (.xlsx)
 
-### Exemplos de uso
+## Exemplos de uso
+
+O construtor `RABScraping(matriculas=[], verbose=False)` espera uma lista de matrículas e um boleano. 
+
+### Salvar dados da consulta em arquivo
+
 ``` py
 from lib.rabscraping import RABScraping
 
@@ -33,7 +38,9 @@ Processando a matrícula: PR-TOL | início
 Processando a matrícula: PR-TOL | fim
 ```
 
-O método `RABScraping.obter_dados()` tem como retorno um DataFrame do Pandas e pode, portanto, ser utilizada para manipulação dos dados obtidos. 
+### Obter DataFrame com os dados da consulta
+
+O método `RABScraping.obter_dados()` tem como retorno um DataFrame do Pandas e pode, portanto, ser utilizado para manipulação dos dados obtidos. 
 O método RABScraping.salvar_arquivo() pode ser usado para salvar qualquer DataFrame como arquivo, através do parâmetro dados.
 
 ``` py
@@ -46,3 +53,13 @@ df = df[df['Ano de Fabricação'] > 2019]
 lista.salvar_arquivo(saida='aeronaves_novas.xlsx', dados=df)
 
 ```
+
+
+-----------------------------------------------------------------------------------------------------------------------
+### Métodos disponíveis
+
+| Método         | Parâmetros                    | Retorno   | Funcionalidade                                         |
+|----------------|-------------------------------|-----------|--------------------------------------------------------|
+| obter_dados    |                              | DataFrame | Fornece os dados obtidos na consulta.                  |
+| salvar_arquivo | <ul><li>**dados**: DataFrame (opcional)</li> Valor padrão: vazio. _Salva os dados da consulta_ <li>**saida**: str (opcional)</li> Valor padrão: 'lista_aeronaves.csv' |          | Salva os dados da consulta em um arquivo csv ou xlsx. Se o parâmetro dados for informado, salva esse DataFrame em arquivo. |
+
