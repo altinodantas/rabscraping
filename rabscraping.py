@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import os
+from invalidfileerror import InvalidFileError
 
 
 class RABScraping:
@@ -51,3 +52,6 @@ class RABScraping:
 			pd.DataFrame.to_csv(self.__df, saida, columns=self.__df.columns, index=False, encoding="utf-8")
 		elif tipo_arquivo == 'xlsx':
 			pd.DataFrame.to_excel(self.__df, saida, columns=self.__df.columns, index=False, encoding="utf-8")
+		else:
+			raise InvalidFileError(tipo_arquivo)
+			#raise NotImplementedError(f"Impossível salva o arquivo. {tipo_arquivo} é um tipo de arquivo não suportado. Informe xlsx ou csv.")
