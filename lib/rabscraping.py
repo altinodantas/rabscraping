@@ -62,16 +62,36 @@ class RABScraping:
 
 		self.__df = pd.DataFrame(self.__lista_dados, columns=dados.keys())    
 		self.__df.sort_values(by=['Matricula'], inplace=True)
+		self.__df = self.__trata_dados(self.__df)
 
 	def obter_dados(self):
+	
 		return self.__df
 
-	def salvar_arquivo(self, saida="lista_aeronaves.csv"):
+	def __trata_dados(self, df):
+
+		aux_df = df
+		aux_df['Ano de Fabricação'] = aux_df['Ano de Fabricação'].astype('int32')
+		aux_df['Número da Matrícula'] = aux_df['Número da Matrícula'].astype('int32')
+		aux_df['Número Máximo de Passageiros'] = aux_df['Número Máximo de Passageiros'].astype('int32')
+		
+		aux_df[['KG','unidade']] = aux_df['Peso Máximo de Decolagem'].str.split('-', expand=True)
+		aux_df['Peso Máximo de Decolagem'] = aux_df['KG'].astype('int32')
+		aux_df.drop(['KG','unidade'], axis=1, inplace=True)
+		aux_df.rename(columns={'Peso Máximo de Decolagem':'Peso Máximo de Decolagem (KG)'}, inplace=True)
+
+		return aux_df
+
+	def salvar_arquivo(self, saida="lista_aeronaves.csv", dados = pd.DataFrame()):
+
+		if dados.empty:
+			dados = self.__df
+
 		tipo_arquivo = saida.split('.')[1]
 		if tipo_arquivo == 'csv':
-			pd.DataFrame.to_csv(self.__df, saida, columns=self.__df.columns, index=False, encoding="utf-8")
+			pd.DataFrame.to_csv(dados, saida, columns=dados.columns, index=False, encoding="utf-8")
 		elif tipo_arquivo == 'xlsx':
-			pd.DataFrame.to_excel(self.__df, saida, columns=self.__df.columns, index=False, encoding="utf-8")
+			pd.DataFrame.to_excel(dados, saida, columns=dados.columns, index=False, encoding="utf-8")
 		else:
 			raise InvalidFileError(tipo_arquivo)
 			#raise NotImplementedError(f"Impossível salva o arquivo. {tipo_arquivo} é um tipo de arquivo não suportado. Informe xlsx ou csv.")
