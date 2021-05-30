@@ -1,4 +1,4 @@
-from rabscraping import RABScraping
+from lib.rabscraping import RABScraping
 
 
 lista = RABScraping(['PR-GUM','PS-AEH', 'PR-PJN', 'XE', 'PR-TOL'], verbose=True)
