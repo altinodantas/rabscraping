@@ -27,7 +27,10 @@ class RABScraping:
 	
     """
 
-	def __init__(self, matriculas=[], verbose=False):
+	def __init__(self, matriculas, verbose=False):
+
+		if type(matriculas) != 'list':
+			raise TypeError(f"O parâmetro matrícula deve ser uma lista")
 
 		self.__lista_dados = []
         
@@ -94,4 +97,3 @@ class RABScraping:
 			pd.DataFrame.to_excel(dados, saida, columns=dados.columns, index=False, encoding="utf-8")
 		else:
 			raise InvalidFileError(tipo_arquivo)
-			#raise NotImplementedError(f"Impossível salva o arquivo. {tipo_arquivo} é um tipo de arquivo não suportado. Informe xlsx ou csv.")
