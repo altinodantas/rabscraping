@@ -9,14 +9,15 @@ A classe RABScraping, a partir de uma lista de matrículas brasileiras, realiza 
 
 ## Exemplos de uso
 
-O construtor `RABScraping(matriculas=[], verbose=False)` espera uma lista de matrículas e um boleano. 
+O construtor `RABScraping(matriculas, verbose=False)` espera **matriculas** como lista obrigatória e um boleano **verbose** como opcional. 
 
 ### Salvar dados da consulta em arquivo
 
 ``` py
 from lib.rabscraping import RABScraping
 
-lista = RABScraping(['PR-GUM','PS-AEH', 'PR-PJN', 'XE', 'PR-TOL'], verbose=True)
+lista_matriculas = ['PR-GUM','PS-AEH', 'PR-PJN', 'XE', 'PR-TOL']
+lista = RABScraping(matriculas=lista_matriculas, verbose=True)
 lista.salvar_arquivo()
 ```
 O método `RABScraping.salvar_arquivo()` salva um arquivo **lista_aeronaves.csv** contendo os dados consultados. 
