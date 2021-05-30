@@ -29,7 +29,7 @@ class RABScraping:
 
 	def __init__(self, matriculas, verbose=False):
 
-		if type(matriculas) != 'list':
+		if not isinstance(matriculas, list) and not isinstance(matriculas, tuple):
 			raise TypeError(f"O parâmetro matrícula deve ser uma lista")
 
 		self.__lista_dados = []
