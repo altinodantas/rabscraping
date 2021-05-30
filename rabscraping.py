@@ -6,6 +6,26 @@ from invalidfileerror import InvalidFileError
 
 
 class RABScraping:
+	"""
+    Class usada para realizar scraping na página do RAB a partir de uma lista de matrículas e salvar em arquivo csv ou excel
+
+    ...
+
+    Atributos
+    ----------
+    __lista_dados : list
+        Uma lista com dicionários no formato {'matricula':'XX-UUU', 'Proprietário': 'Altino Dantas'}
+	__df : DataFrame
+		DataFrame contendo a consolidação do dados de __lista_dados
+
+    Métodos
+    -------
+    obter_dados()
+        Retorna um DataFrame pandas com a lista de aeronaves encontradas
+	salvar_arquivo(saida="lista_aeronaves.csv")
+        Salva um arquivo com a lista das aeronaves encontradas. O arquivo pode ser .xlsx ou .csv
+	
+    """
 
 	def __init__(self, matriculas=[], verbose=False):
 
@@ -46,7 +66,7 @@ class RABScraping:
 	def obter_dados(self):
 		return self.__df
 
-	def salvar_arquivo(self, saida="saida/lista_aeronaves.csv"):
+	def salvar_arquivo(self, saida="lista_aeronaves.csv"):
 		tipo_arquivo = saida.split('.')[1]
 		if tipo_arquivo == 'csv':
 			pd.DataFrame.to_csv(self.__df, saida, columns=self.__df.columns, index=False, encoding="utf-8")
