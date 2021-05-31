@@ -55,10 +55,11 @@ class RABScraping:
 				dados[campo[0]] = valor
 
 			if(dados['Modelo'] != 'Modelo:'):   
+				dados['Peso Máximo de Decolagem'] = dados['Peso Máximo de Decolagem'].split("-")[0]
 				self.__lista_dados.append(dados) 
 			else:
 				if verbose:     
-					print(f"--- Matrícula {m} não encontrada ---")
+					print(f"---- Matrícula {m} não encontrada ----")
 
 			if verbose:
 				print(f"Processando a matrícula: {m} | fim")
@@ -77,11 +78,7 @@ class RABScraping:
 		aux_df['Ano de Fabricação'] = aux_df['Ano de Fabricação'].astype('int32')
 		aux_df['Número da Matrícula'] = aux_df['Número da Matrícula'].astype('int32')
 		aux_df['Número Máximo de Passageiros'] = aux_df['Número Máximo de Passageiros'].astype('int32')
-		
-		aux_df[['KG','unidade']] = aux_df['Peso Máximo de Decolagem'].str.split('-', expand=True)
-		aux_df['Peso Máximo de Decolagem'] = aux_df['KG'].astype('int32')
-		aux_df.drop(['KG','unidade'], axis=1, inplace=True)
-		aux_df.rename(columns={'Peso Máximo de Decolagem':'Peso Máximo de Decolagem (KG)'}, inplace=True)
+		aux_df['Peso Máximo de Decolagem'] = aux_df['Peso Máximo de Decolagem'].astype('int32')
 
 		return aux_df
 
@@ -101,3 +98,15 @@ class RABScraping:
 			pd.DataFrame.to_excel(dados, saida, columns=dados.columns, index=False, encoding="utf-8")
 		else:
 			raise InvalidFileError(tipo_arquivo)
+	
+	def combinar_arquivos(self, arquivo1, arquivo2):
+		df1 = pd.read_csv(arquivo1)
+		df2 = pd.read_csv(arquivo2)
+
+		if not (list(df1.columns) == list(df1.columns)):
+			raise TypeError(f"Os arquivos passados não possuem as mesmas colunas")
+		
+		result = pd.concat([df1, df2]).drop_duplicates()
+		result.reset_index(drop=True, inplace=True)
+		
+		return result
