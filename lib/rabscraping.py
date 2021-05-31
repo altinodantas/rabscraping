@@ -90,7 +90,11 @@ class RABScraping:
 		if dados.empty:
 			dados = self.__df
 
-		tipo_arquivo = saida.split('.')[1]
+		try:
+			tipo_arquivo = saida.split('.')[-1]
+		except IndexError as ie:
+			raise TypeError(f"O parâmetro saída deve conter o nome do arquivo e a extenção")
+
 		if tipo_arquivo == 'csv':
 			pd.DataFrame.to_csv(dados, saida, columns=dados.columns, index=False, encoding="utf-8")
 		elif tipo_arquivo == 'xlsx':
