@@ -61,6 +61,7 @@ lista.salvar_arquivo(saida='aeronaves_novas.xlsx', dados=df)
 
 | Método         | Parâmetros                    | Retorno   | Funcionalidade                                         |
 |----------------|-------------------------------|-----------|--------------------------------------------------------|
+| RABScraping    | <ul><li>**matriculas**: list (Obrigatório)</li><li>**verbose**: Booleano (Opcional)</li>Valor padrão: False</ul>                             | Objeto da classe RABScraping | Construtor da classe.                  |
 | obter_dados    |                              | DataFrame | Fornece os dados obtidos na consulta.                  |
-| salvar_arquivo | <ul><li>**dados**: DataFrame (opcional)</li> Valor padrão: vazio. _Salva os dados da consulta_ <li>**saida**: str (opcional)</li> Valor padrão: 'lista_aeronaves.csv' |          | Salva os dados da consulta em um arquivo csv ou xlsx. Se o parâmetro dados for informado, salva esse DataFrame em arquivo. |
+| salvar_arquivo | <ul><li>**dados**: DataFrame (opcional)</li> Valor padrão: vazio. <li>**saida**: str (opcional)</li> Valor padrão: 'lista_aeronaves.csv' |          | Salva os dados da consulta em um arquivo csv ou xlsx. Se o parâmetro dados for informado, salva esse DataFrame em arquivo. |
 
