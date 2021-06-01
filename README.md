@@ -55,6 +55,23 @@ lista.salvar_arquivo(saida='aeronaves_novas.xlsx', dados=df)
 
 ```
 
+### Combinar dois arquivos
+O método `RABScraping.combinar_arquivos()` combina os dados de dois arquivos e salva o resultado em um terceiro arquivo. Caso `duplciados=False`, a combinação removerá registros repetidos, considerando a matrícula como chave. Essa funcionalidade pode ser útil para lidar com situações de permanente atualização de listas registros. 
+
+``` py
+from lib.rabscraping import RABScraping
+
+lista_matriculas = ('PR-GUM','PS-AEH', 'PR-PJN', 'XE', 'PR-TOL')
+lista = RABScraping(matriculas=lista_matriculas, verbose=True)
+lista.salvar_arquivo("arquivo_a.xlsx")
+
+lista_matriculas = ['PR-PJN']
+lista = RABScraping(matriculas=lista_matriculas, verbose=True)
+lista.salvar_arquivo("arquivo_b.xlsx")
+
+RABScraping.combinar_arquivos('arquivo_a.xlsx','arquivo_b.csv','saida.xlsx')
+
+```
 
 -----------------------------------------------------------------------------------------------------------------------
 ### Métodos disponíveis
@@ -64,4 +81,4 @@ lista.salvar_arquivo(saida='aeronaves_novas.xlsx', dados=df)
 | RABScraping    | <ul><li>**matriculas**: list (Obrigatório)</li><li>**verbose**: Booleano (Opcional)</li>Valor padrão: False</ul>                             | Objeto da classe RABScraping | Construtor da classe.                  |
 | obter_dados    | Nenhum                        | DataFrame | Fornece os dados obtidos na consulta.                  |
 | salvar_arquivo | <ul><li>**dados**: DataFrame (opcional)</li> Valor padrão: vazio. <li>**saida**: str (opcional)</li> Valor padrão: 'lista_aeronaves.csv' | Nenhum        | Salva os dados da consulta em um arquivo csv ou xlsx. Se o parâmetro dados for informado, salva esse DataFrame em arquivo. |
-|combinar_arquivos | <ul><li>**arquivo1**: str (Obrigatório)</li> <li>**arquivo2**: str (Obrigatório)</li> <li>**saida**: str (Opcional) </li>Valor padão: lista_combinada_aeronaves.csv</ul> | Nenhum  | Combina os arquivos __arquivo1__ e __arquivo2__ e salva no caminho informado no parâmetro **saida**. 
+|combinar_arquivos | <ul><li>**arquivo1**: str (Obrigatório)</li> <li>**arquivo2**: str (Obrigatório)</li> <li>**saida**: str (Opcional) </li>Valor padão: lista_combinada_aeronaves.csv <li>**duplicados**: booleano (Opcional)</li> Valor padrão: False</ul> | Nenhum  | Combina os arquivos __arquivo1__ e __arquivo2__ e salva no caminho informado no parâmetro **saida**. 
