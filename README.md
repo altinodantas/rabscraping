@@ -67,7 +67,7 @@ lista.salvar_arquivo("arquivo_a.xlsx")
 
 lista_matriculas = ['PR-PJN']
 lista = RABScraping(matriculas=lista_matriculas, verbose=True)
-lista.salvar_arquivo("arquivo_b.xlsx")
+lista.salvar_arquivo("arquivo_b.csv")
 
 RABScraping.combinar_arquivos('arquivo_a.xlsx','arquivo_b.csv','saida.xlsx')
 
