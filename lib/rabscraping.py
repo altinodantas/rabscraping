@@ -68,6 +68,7 @@ class RABScraping:
 
 		self.__df = pd.DataFrame(self.__lista_dados, columns=self.__nome_colunas)    
 		self.__df.sort_values(by=['Matricula'], inplace=True)
+		self.__df.reset_index(drop=True, inplace=True)
 		self.__df = self.__trata_dados(self.__df)
 
 	def obter_dados(self):
