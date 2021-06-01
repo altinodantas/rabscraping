@@ -56,7 +56,7 @@ lista.salvar_arquivo(saida='aeronaves_novas.xlsx', dados=df)
 ```
 
 ### Combinar dois arquivos
-O método `RABScraping.combinar_arquivos()` combina os dados de dois arquivos e salva o resultado em um terceiro arquivo. Caso `duplciados=False`, a combinação removerá registros repetidos, considerando a matrícula como chave. Essa funcionalidade pode ser útil para lidar com situações de permanente atualização de listas registros. 
+O método `RABScraping.combinar_arquivos()` combina os dados de dois arquivos e salva o resultado em um terceiro arquivo. Caso `duplicados=False`, a combinação removerá registros repetidos, considerando a matrícula como chave. Essa funcionalidade pode ser útil para lidar com situações de permanente atualização de listas registros. 
 
 ``` py
 from lib.rabscraping import RABScraping
@@ -69,7 +69,7 @@ lista_matriculas = ['PR-PJN']
 lista = RABScraping(matriculas=lista_matriculas, verbose=True)
 lista.salvar_arquivo("arquivo_b.csv")
 
-RABScraping.combinar_arquivos('arquivo_a.xlsx','arquivo_b.csv','saida.xlsx')
+RABScraping.combinar_arquivos('arquivo_a.xlsx','arquivo_b.csv','saida.xlsx', duplicados=True)
 
 ```
 
