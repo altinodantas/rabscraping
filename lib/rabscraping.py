@@ -101,7 +101,7 @@ class RABScraping:
 		else:
 			raise InvalidFileError(tipo_arquivo)
 	
-	def combinar_arquivos(self, arquivo1, arquivo2, saida='lista_combinada_aeronaves.csv'):
+	def combinar_arquivos(self, arquivo1, arquivo2, saida='lista_combinada_aeronaves.csv', duplicados=False):
 
 		assert self.__arquivo_valido(arquivo1), f"{arquivo1} deve conter o nome e uma extenção válida"
 		assert self.__arquivo_valido(arquivo2), f"{arquivo1} deve conter o nome e uma extenção válida"
@@ -120,7 +120,9 @@ class RABScraping:
 		assert self.__colunas_iguais(df1, df2), "As colunas dos arquivos passados não são iguais"
 		
 		result = pd.concat([df1, df2])
-		result.drop_duplicates(subset=['Matricula'], inplace=True)
+		if not duplicados:
+			result.drop_duplicates(subset=['Matricula'], inplace=True)
+		
 		result.reset_index(drop=True, inplace=True)
 
 		if saida.split('.')[-1] == 'csv':
