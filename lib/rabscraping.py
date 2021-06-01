@@ -106,10 +106,15 @@ class RABScraping:
 		assert self.__arquivo_valido(arquivo2), f"{arquivo1} deve conter o nome e uma extenção válida"
 		assert self.__arquivo_valido(saida), 	f"{saida} deve conter o nome e uma extenção válida" 
 
-		df1 = pd.read_csv(arquivo1)
-		df2 = pd.read_csv(arquivo2)
+		if arquivo1.split('.')[-1] == 'csv':
+			df1 = pd.read_csv(arquivo1)
+		elif arquivo1.split('.')[-1] == 'xlsx':
+			df1 = pd.read_excel(arquivo1)
 
-		print(list(df1.columns), "\n", list(df2.columns))
+		if arquivo2.split('.')[-1] == 'csv':
+			df2 = pd.read_csv(arquivo2)
+		elif arquivo2.split('.')[-1] == 'xlsx':
+			df2 = pd.read_excel(arquivo2)
 
 		assert self.__colunas_iguais(df1, df2), "As colunas dos arquivos passados não são iguais"
 		
