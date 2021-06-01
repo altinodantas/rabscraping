@@ -53,6 +53,8 @@ class RABScraping:
 				campo = texto[0].split(":")
 				valor = texto[-1].replace("\t","")     
 				dados[campo[0]] = valor
+			
+			print(len(dados))
 
 			if(dados['Modelo'] != 'Modelo:'):   
 				dados['Peso Máximo de Decolagem'] = dados['Peso Máximo de Decolagem'].split("-")[0]
@@ -64,12 +66,13 @@ class RABScraping:
 			if verbose:
 				print(f"Processando a matrícula: {m} | fim")
 
+			print(len(dados))
+
 		self.__df = pd.DataFrame(self.__lista_dados, columns=dados.keys())    
 		self.__df.sort_values(by=['Matricula'], inplace=True)
-		self.__df = self.__trata_dados(self.__df)
+		#self.__df = self.__trata_dados(self.__df)
 
 	def obter_dados(self):
-	
 		return self.__df
 
 	def __trata_dados(self, df):
@@ -99,14 +102,26 @@ class RABScraping:
 		else:
 			raise InvalidFileError(tipo_arquivo)
 	
-	def combinar_arquivos(self, arquivo1, arquivo2):
+	def combinar_arquivos(self, arquivo1, arquivo2, saida='lista_combinada_aeronaves.csv'):
+
+		try:
+			tipo_arquivo = saida.split('.')[-1]
+		except IndexError as ie:
+			raise TypeError(f"O parâmetro saída deve conter o nome do arquivo e a extenção")
+
 		df1 = pd.read_csv(arquivo1)
 		df2 = pd.read_csv(arquivo2)
 
-		if not (list(df1.columns) == list(df1.columns)):
-			raise TypeError(f"Os arquivos passados não possuem as mesmas colunas")
+		print(list(df1.columns), "\n", list(df2.columns))
+
+		assert self.__colunas_iguais(df1, df2), "As colunas dos arquivos passados não são iguais"
 		
 		result = pd.concat([df1, df2]).drop_duplicates()
 		result.reset_index(drop=True, inplace=True)
-		
-		return result
+
+		if tipo_arquivo == 'csv':
+			pd.DataFrame.to_csv(result, saida, columns=result.columns, index=False, encoding="utf-8")
+
+
+	def __colunas_iguais(self, df1, df2):
+		return (list(df1.columns) == list(df2.columns))
