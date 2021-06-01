@@ -362,5 +362,6 @@ MigrationBackup/
 
 *.csv
 *.xlsx
+test.py
 
 rabscraping/
