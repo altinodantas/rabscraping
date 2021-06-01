@@ -33,19 +33,20 @@ class RABScraping:
 			raise TypeError(f"O parâmetro matrícula deve ser uma lista")
 
 		self.__lista_dados = []
+		self.__nome_colunas = []
         
-		for m in matriculas:
-			m = m.strip()
+		for matricula in matriculas:
+			matricula = matricula.strip()
 
 			if verbose:
-				print(f"Processando a matrícula: {m} | início")
+				print(f"Processando a matrícula: {matricula} | início")
 
-			html = requests.get(f"https://sistemas.anac.gov.br/aeronaves/cons_rab_resposta.asp?textMarca={m}").content
+			html = requests.get(f"https://sistemas.anac.gov.br/aeronaves/cons_rab_resposta.asp?textMarca={matricula}").content
 			soup = BeautifulSoup(html, 'html.parser')
 
 			tabela = soup.find("table", class_="table table-hover")
 			linhas = tabela.find_all('tr')
-			dados = {'Matricula' : m}
+			dados = {'Matricula' : matricula}
 
 			for ln in linhas:
 				texto = ln.text.strip()
@@ -53,24 +54,21 @@ class RABScraping:
 				campo = texto[0].split(":")
 				valor = texto[-1].replace("\t","")     
 				dados[campo[0]] = valor
-			
-			print(len(dados))
 
 			if(dados['Modelo'] != 'Modelo:'):   
 				dados['Peso Máximo de Decolagem'] = dados['Peso Máximo de Decolagem'].split("-")[0]
 				self.__lista_dados.append(dados) 
+				self.__nome_colunas = dados.keys()
 			else:
 				if verbose:     
-					print(f"---- Matrícula {m} não encontrada ----")
+					print(f"---- Matrícula {matricula} não encontrada ----")
 
 			if verbose:
-				print(f"Processando a matrícula: {m} | fim")
+				print(f"Processando a matrícula: {matricula} | fim")
 
-			print(len(dados))
-
-		self.__df = pd.DataFrame(self.__lista_dados, columns=dados.keys())    
+		self.__df = pd.DataFrame(self.__lista_dados, columns=self.__nome_colunas)    
 		self.__df.sort_values(by=['Matricula'], inplace=True)
-		#self.__df = self.__trata_dados(self.__df)
+		self.__df = self.__trata_dados(self.__df)
 
 	def obter_dados(self):
 		return self.__df
@@ -104,10 +102,9 @@ class RABScraping:
 	
 	def combinar_arquivos(self, arquivo1, arquivo2, saida='lista_combinada_aeronaves.csv'):
 
-		try:
-			tipo_arquivo = saida.split('.')[-1]
-		except IndexError as ie:
-			raise TypeError(f"O parâmetro saída deve conter o nome do arquivo e a extenção")
+		assert self.__arquivo_valido(arquivo1), f"{arquivo1} deve conter o nome e uma extenção válida"
+		assert self.__arquivo_valido(arquivo2), f"{arquivo1} deve conter o nome e uma extenção válida"
+		assert self.__arquivo_valido(saida), 	f"{saida} deve conter o nome e uma extenção válida" 
 
 		df1 = pd.read_csv(arquivo1)
 		df2 = pd.read_csv(arquivo2)
@@ -116,12 +113,20 @@ class RABScraping:
 
 		assert self.__colunas_iguais(df1, df2), "As colunas dos arquivos passados não são iguais"
 		
-		result = pd.concat([df1, df2]).drop_duplicates()
+		result = pd.concat([df1, df2])
+		result.drop_duplicates(subset=['Matricula'], inplace=True)
 		result.reset_index(drop=True, inplace=True)
 
-		if tipo_arquivo == 'csv':
+		if saida.split('.')[-1] == 'csv':
 			pd.DataFrame.to_csv(result, saida, columns=result.columns, index=False, encoding="utf-8")
-
+		elif saida.split('.')[-1] == 'xlsx':
+			pd.DataFrame.to_excel(result, saida, columns=result.columns, index=False, encoding="utf-8")
+		else:
+			raise InvalidFileError(tipo_arquivo)
 
 	def __colunas_iguais(self, df1, df2):
 		return (list(df1.columns) == list(df2.columns))
+
+	def __arquivo_valido(self, arquivo):
+		tipo_arquivo = arquivo.split('.')[-1]
+		return tipo_arquivo in ('csv','xlsx')
