@@ -3,7 +3,7 @@
 Código pyhon que realiza um scraping no site do Registro Aeronáutico Brasileiro (RAB) através da busca por matrícula. 
 A classe RABScraping, a partir de uma lista de matrículas brasileiras, realiza o scraping e fornece um Pandas DataFrame e/ou salva um arquivo com as informações encontradas.
 
-## Arquivos suportados para salvamento
+## Arquivos suportados
 - csv
 - Excel (.xlsx)
 
@@ -82,3 +82,9 @@ RABScraping.combinar_arquivos('arquivo_a.xlsx','arquivo_b.csv','saida.xlsx', dup
 | obter_dados    | Nenhum                        | DataFrame | Fornece os dados obtidos na consulta.                  |
 | salvar_arquivo | <ul><li>**dados**: DataFrame (opcional)</li> Valor padrão: vazio. <li>**saida**: str (opcional)</li> Valor padrão: 'lista_aeronaves.csv' | Nenhum        | Salva os dados da consulta em um arquivo csv ou xlsx. Se o parâmetro dados for informado, salva esse DataFrame em arquivo. |
 |combinar_arquivos | <ul><li>**arquivo1**: str (Obrigatório)</li> <li>**arquivo2**: str (Obrigatório)</li> <li>**saida**: str (Opcional) </li>Valor padão: lista_combinada_aeronaves.csv <li>**duplicados**: booleano (Opcional)</li> Valor padrão: False</ul> | Nenhum  | Combina os arquivos __arquivo1__ e __arquivo2__ e salva no caminho informado no parâmetro **saida**. 
+  
+## Requisitos
+  - Python 3.7 ou superior
+  - pacotes no requirements.txt
+  
+  **OBS**.:  Até a última revisão deste, o colab suportava a versão 4.6.3 do BS4 e por esse motivo os dados abaixo do campo "Status da Operação" não são recuperados, quando utilizada a referida plataforma.  
