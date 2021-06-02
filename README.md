@@ -56,7 +56,7 @@ lista.salvar_arquivo(saida='aeronaves_novas.xlsx', dados=df)
 ```
 
 ### Combinar dois arquivos
-O método `RABScraping.combinar_arquivos()` combina os dados de dois arquivos e salva o resultado em um terceiro arquivo. Caso `duplicados=False`, a combinação removerá registros repetidos, considerando a matrícula como chave. Essa funcionalidade pode ser útil para lidar com situações de permanente atualização de listas registros. 
+O método `RABScraping.combinar_arquivos()` combina os dados de dois arquivos e salva o resultado em um terceiro arquivo. Os dois arquivos a serem combinados devem possir o mesmo cabeçalhos. Caso `duplicados=False`, a combinação removerá registros repetidos, considerando a matrícula como chave, caso contrário funcionará como _append_. Essa funcionalidade pode ser útil para lidar com situações de permanente atualização em registros de log (ideal para *plane sportters*). 
 
 ``` py
 from lib.rabscraping import RABScraping
@@ -87,4 +87,4 @@ RABScraping.combinar_arquivos('arquivo_a.xlsx','arquivo_b.csv','saida.xlsx', dup
   - Python 3.7 ou superior
   - pacotes no requirements.txt
   
-  **OBS**.:  Até a última revisão deste, o colab suportava a versão 4.6.3 do BS4 e por esse motivo os dados abaixo do campo "Status da Operação" não são recuperados, quando utilizada a referida plataforma.  
+  **OBS**.:  Até a última revisão deste (01/05/2021), a página de consulta por matrícula do RAB renderiza a tabela principal com umas das linhas contendo apenas uma célula `(<td>)`, enquanto as demais têm duas. Nesse caso, algumas versões do BeautifulSoup4 não conseguem capturar todas as linhas da tabela através do _find_all_. Caso o código seja executado no *colab*, é possível que não esteja disponível a versão mais atualizada do BS4, sendo assim, a consulta não retornará os últimos campos.   
