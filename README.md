@@ -9,7 +9,7 @@ A classe RABScraping, a partir de uma lista de matrículas brasileiras, realiza 
 
 ## Exemplos de uso
 
-O construtor `RABScraping(matriculas, verbose=False)` espera **matriculas** como lista obrigatória e um boleano **verbose** como opcional. 
+O construtor `RABScraping(matriculas, verbose=False)` possui dois parâmetros: 1 - **matriculas** a lista de matrículas (obrigatório) e 2 - **verbose** booleano que define impressão do progresso (Opcional). 
 
 ### Salvar dados da consulta em arquivo
 
