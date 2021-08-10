@@ -9,7 +9,9 @@ A classe RABScraping, a partir de uma lista de matrículas brasileiras, realiza 
 
 ## Exemplos de uso
 
-O construtor `RABScraping(matriculas, verbose=False)` possui dois parâmetros: 1 - **matriculas** a lista de matrículas (obrigatório) e 2 - **verbose** booleano que define impressão do progresso (Opcional). 
+O construtor `RABScraping(matriculas, verbose=False)` possui dois parâmetros: 
+- **matriculas**: a lista de matrículas (obrigatório); 
+- **verbose**: booleano que define impressão do progresso (Opcional). 
 
 ### Salvar dados da consulta em arquivo
 
@@ -87,4 +89,4 @@ RABScraping.combinar_arquivos('arquivo_a.xlsx','arquivo_b.csv','saida.xlsx', dup
   - Python 3.7 ou superior
   - pacotes no requirements.txt
   
-  **OBS**.:  Até a última revisão deste (01/05/2021), a página de consulta por matrícula do RAB renderiza a tabela principal com umas das linhas contendo apenas uma célula `(<td>)`, enquanto as demais têm duas. Nesse caso, algumas versões do BeautifulSoup4 não conseguem capturar todas as linhas da tabela através do _find_all_. Caso o código seja executado no *colab*, é possível que não esteja disponível a versão mais atualizada do BS4, sendo assim, a consulta não retornará os últimos campos.   
+  **OBS**.:  Até a última revisão deste (01/05/2021), a página de consulta por matrícula do RAB renderiza a tabela principal com uma das linhas contendo apenas uma célula `(<td>)`, enquanto as demais têm duas. Nesse caso, algumas versões do BeautifulSoup4 não conseguem capturar todas as linhas da tabela através do _find_all_. Caso o código seja executado no *colab*, é possível que não esteja disponível a versão mais atualizada do BS4, sendo assim, a consulta não retornará os últimos campos.   
